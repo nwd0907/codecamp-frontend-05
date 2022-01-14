@@ -34,10 +34,10 @@ export const CREATE_BOARD = gql`
 `;
 
 export default function BoardsNew() {
-  const [myWriter, setMyWriter] = useState("");
-  const [myPassword, setMyPassword] = useState("");
-  const [myTitle, setMyTitle] = useState("");
-  const [myContents, setMyContents] = useState("");
+  const [writer, setMyWriter] = useState("");
+  const [password, setMyPassword] = useState("");
+  const [title, setMyTitle] = useState("");
+  const [contents, setMyContents] = useState("");
 
   const [myWriterError, setMyWriterError] = useState("");
   const [myPasswordError, setMyPasswordError] = useState("");
@@ -91,10 +91,10 @@ export default function BoardsNew() {
       await createBoard({
         variables: {
           createBoardInput: {
-            writer: myWriter,
-            password: myPassword,
-            title: myTitle,
-            contents: myContents,
+            writer,
+            password,
+            title,
+            contents,
           },
         },
       })
