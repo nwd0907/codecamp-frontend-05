@@ -1,26 +1,18 @@
 import { useRouter } from 'next/router'
 
-export default function DynamicRoutingPage(){
+export default function StaticRoutingPage(){
     const router = useRouter()
 
     const onClickMove1 = () => {
-        router.push("/05-06-dynamic-routed-board/1")
+        router.push("/05-06-static-routed-board-query/1")
     }
 
     const onClickMove2 = () => {
-        router.push("/05-06-dynamic-routed-board/2")
+        router.push("/05-06-static-routed-board-query/2")
     }
 
     const onClickMove3 = () => {
-        router.push("/05-06-dynamic-routed-board/3")
-    }
-
-    const onClickMove4 = () => {
-        router.push("/05-06-dynamic-routed-board/4")
-    }
-
-    const onClickMove100 = () => {
-        router.push("/05-06-dynamic-routed-board/100")
+        router.push("/05-06-static-routed-board-query/3")
     }
 
     return (
@@ -29,8 +21,6 @@ export default function DynamicRoutingPage(){
             <button onClick={onClickMove1}>1번 게시글로 이동하기</button>
             <button onClick={onClickMove2}>2번 게시글로 이동하기</button>
             <button onClick={onClickMove3}>3번 게시글로 이동하기</button>
-            <button onClick={onClickMove4}>4번 게시글로 이동하기</button>
-            <button onClick={onClickMove100}>100번 게시글로 이동하기</button>
         </div>
     )
 

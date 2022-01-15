@@ -1,11 +1,8 @@
-export default function LetCount(){
-
-    let count = 0
+export default function DocumentCount(){
 
     function zzz(){
-        count = count + 1
-        console.log('현재카운트' + count)
-        document.getElementById("qqq").innerText = count
+        const aaa = Number(document.getElementById("qqq").innerText) + 1
+        document.getElementById("qqq").innerText = aaa
     }
 
     return (

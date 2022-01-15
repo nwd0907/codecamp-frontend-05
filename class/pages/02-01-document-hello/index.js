@@ -1,10 +1,7 @@
-export default function LetHello(){
-
-    let qqq = "반갑습니다"
-    // const aaa = "안녕하세요"
+export default function DocumentHello(){
 
     function zzz(){
-        document.getElementById("qqq").innerText = qqq
+        document.getElementById("qqq").innerText = "반갑습니다"
     }
 
     return (
