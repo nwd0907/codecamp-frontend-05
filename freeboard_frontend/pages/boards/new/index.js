@@ -24,6 +24,7 @@ import {
 } from "../../../styles/emotion";
 import { useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
+import { useRouter } from "next/router";
 
 export const CREATE_BOARD = gql`
   mutation createBoard($createBoardInput: CreateBoardInput!) {
@@ -34,10 +35,12 @@ export const CREATE_BOARD = gql`
 `;
 
 export default function BoardsNew() {
-  const [writer, setMyWriter] = useState("");
-  const [password, setMyPassword] = useState("");
-  const [title, setMyTitle] = useState("");
-  const [contents, setMyContents] = useState("");
+  const router = useRouter()
+
+  const [myWriter, setMyWriter] = useState("");
+  const [myPassword, setMyPassword] = useState("");
+  const [myTitle, setMyTitle] = useState("");
+  const [myContents, setMyContents] = useState("");
 
   const [myWriterError, setMyWriterError] = useState("");
   const [myPasswordError, setMyPasswordError] = useState("");
@@ -88,17 +91,21 @@ export default function BoardsNew() {
       setMyContentsError("내용을 입력해주세요.");
     }
     if (myWriter !== "" && myPassword !== "" && myTitle !== "" && myContents !== "") {
-      await createBoard({
-        variables: {
-          createBoardInput: {
-            writer,
-            password,
-            title,
-            contents,
+      try {
+        const result = await createBoard({
+          variables: {
+            createBoardInput: {
+              writer: myWriter,
+              password: myPassword,
+              title: myTitle,
+              contents: myContents,
+            },
           },
-        },
-      })
-      alert("게시물이 등록되었습니다.")
+        })
+        router.push(`/boards/${result.data.createBoard._id}`)
+      } catch(error) {
+        console.log(error.message)
+      }
     }
   }
 
