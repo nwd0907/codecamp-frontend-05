@@ -1,5 +1,5 @@
 import BoardWrite from "../../../src/components/units/board/write/BoardWrite.container";
 
-export default function BoardsNew() {
-  return <BoardWrite />
+export default function BoardsNewPage() {
+  return <BoardWrite isEdit={false} />
 }

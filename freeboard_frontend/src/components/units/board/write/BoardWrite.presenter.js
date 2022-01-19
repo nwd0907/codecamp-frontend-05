@@ -3,11 +3,11 @@ import * as S from './BoardWrite.styles'
 export default function BoardWriteUI(props){
     return (
         <S.Wrapper>
-          <S.Title>게시판 등록</S.Title>
+          <S.Title>{props.isEdit ? "게시판 수정" : "게시판 등록"}</S.Title>
           <S.WriterWrapper>
           <S.InputWrapper>
               <S.Label>작성자</S.Label>
-              <S.Writer type="text" placeholder="이름을 적어주세요." onChange={props.onChangeMyWriter} />
+              <S.Writer type="text" placeholder="이름을 적어주세요." onChange={props.onChangeMyWriter}/>
               <S.Error>{props.myWriterError}</S.Error>
           </S.InputWrapper>
           <S.InputWrapper>
@@ -53,7 +53,12 @@ export default function BoardWriteUI(props){
             <S.RadioLabel htmlFor="image">사진</S.RadioLabel>
           </S.OptionWrapper>
           <S.ButtonWrapper>
-            <S.SubmitButton onClick={props.onClickSubmit} isActive={props.isActive}>등록하기</S.SubmitButton>
+            <S.SubmitButton 
+                onClick={props.isEdit ? props.onClickUpdate : props.onClickSubmit}
+                isActive={props.isActive}
+            >
+                {props.isEdit ? "수정하기" : "등록하기"}
+            </S.SubmitButton>
           </S.ButtonWrapper>
       </S.Wrapper>
     )
