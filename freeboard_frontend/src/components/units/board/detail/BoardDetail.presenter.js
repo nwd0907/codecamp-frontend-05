@@ -1,3 +1,4 @@
+import { getMyDate } from '../../../../commons/libraries/utils'
 import * as S from './BoardDetail.styles'
 
 export default function BoardDetailUI(props){
@@ -9,7 +10,7 @@ export default function BoardDetailUI(props){
                     <S.Avatar src="/images/avatar.png" />
                     <S.Info>
                     <S.Writer>{props.data?.fetchBoard?.writer}</S.Writer>
-                    <S.CreatedAt>{props.data?.fetchBoard?.createdAt}</S.CreatedAt>
+                    <S.CreatedAt>{getMyDate(props.data?.fetchBoard?.createdAt)}</S.CreatedAt>
                     </S.Info>
                 </S.AvatarWrapper>
                 <S.IconWrapper>
