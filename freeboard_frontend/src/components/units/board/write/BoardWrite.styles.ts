@@ -155,6 +155,9 @@ export const CancelButton = styled.button`
   cursor: pointer;
 `;
 
+interface IProps {
+  isActive: boolean
+}
 export const SubmitButton = styled.button`
   width: 179px;
   height: 52px;
@@ -163,10 +166,10 @@ export const SubmitButton = styled.button`
   font-weight: 500;
   margin-left: 12px;
   margin-right: 12px;
-  background-color: ${(props) => props.isActive === true ? "yellow" : "none"};
+  background-color: ${(props: IProps) => props.isActive === true ? "yellow" : "none"};
   
   :hover {
-    cursor: ${(props) => props.isActive === true ? "pointer" : "default"};
+    cursor: ${(props: IProps) => props.isActive === true ? "pointer" : "default"};
   }
 `;
 

@@ -107,15 +107,20 @@ export default function BoardWrite(props){
     }
 
     async function onClickUpdate() {
+      interface IMyUpdateBoardInput {
+        title?: string
+        contents?: string
+      }
+      const myUpdateBoardInput: IMyUpdateBoardInput = {}
+      if(myTitle) myUpdateBoardInput.title = myTitle
+      if(myContents) myUpdateBoardInput.contents = myContents
+
       try {
         await updateBoard({
           variables: {
             boardId: router.query.aaa,
             password: myPassword,
-            updateBoardInput: {
-              title: myTitle,
-              contents: myContents
-            },
+            updateBoardInput: myUpdateBoardInput
           },
         });
         alert("수정이 완료되었습니다.")
@@ -127,6 +132,7 @@ export default function BoardWrite(props){
 
     return (
       <BoardWriteUI 
+        data={props.data}
         isEdit={props.isEdit}
         isActive={isActive}
         myWriterError={myWriterError}

@@ -32,7 +32,13 @@ export default function BoardWrite(props){
 
     const xxx = async () => {
         console.log('수정하기를 클릭하셨군요!!!')
-        const myVariables = { 
+        interface IMyVariables {
+            number: number
+            writer?: string
+            title?: string
+            contents?: string
+        }
+        const myVariables: IMyVariables = { 
             number: Number(router.query.mynumber),
         }
 
