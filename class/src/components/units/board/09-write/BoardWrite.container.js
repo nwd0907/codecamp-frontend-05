@@ -27,16 +27,24 @@ export default function BoardWrite(props){
         console.log(result.data.createBoard.message)
         setAaa(result.data.createBoard.message)
 
-        router.push(`/08-05-boards/${result.data.createBoard.number}`)
+        router.push(`/09-01-boards/${result.data.createBoard.number}`)
     }
 
     const xxx = async () => {
         console.log('수정하기를 클릭하셨군요!!!')
+        const myVariables = { 
+            number: Number(router.query.mynumber),
+        }
+
+        if(myWriter !== "") myVariables.writer = myWriter
+        if(myTitle !== "") myVariables.title = myTitle
+        if(myContents !== "") myVariables.contents = myContents
+
         const result = await www({
-            variables: { number: Number(router.query.mynumber), writer: myWriter, title: myTitle, contents: myContents }
+            variables: myVariables
         })
         console.log(result.data.updateBoard.message)
-        router.push(`/08-05-boards/${router.query.mynumber}`)
+        router.push(`/09-01-boards/${router.query.mynumber}`)
     }
 
     const onChangeMyWriter = (event) => {
@@ -70,6 +78,7 @@ export default function BoardWrite(props){
             fff={onChangeMyContents}
             isActive={isActive}
             isEdit={props.isEdit}
+            data={props.data}
         />
     )
 
