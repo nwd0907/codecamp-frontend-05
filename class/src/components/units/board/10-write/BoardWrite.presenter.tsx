@@ -1,6 +1,7 @@
 import * as S from './BoardWrite.styles'
+import { IBoardWriteUIProps } from './BoardWrite.types'
 
-export default function BoardWriteUI(props){   
+export default function BoardWriteUI(props: IBoardWriteUIProps){   
     return (
         <>
             <h1>{props.isEdit ? "수정하기" : "등록하기"}</h1>

@@ -107,6 +107,16 @@ export default function BoardWrite(props){
     }
 
     async function onClickUpdate() {
+      if(!myTitle && !myContents){
+        alert('둘중 하나는 입력해야합니다.')
+        return
+      }
+
+      if(!myPassword){
+        alert("비밀번호 입력해주세요")
+        return
+      }
+
       interface IMyUpdateBoardInput {
         title?: string
         contents?: string

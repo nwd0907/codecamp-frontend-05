@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {useState} from 'react'
 import { useMutation } from '@apollo/client'
 import BoardWriteUI from './BoardWrite.presenter'
