@@ -1,160 +1,170 @@
-import { useState } from 'react'
-import { useMutation } from '@apollo/client'
+import { ChangeEvent, useState } from "react";
+import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
-import BoardWriteUI from './BoardWrite.presenter';
-import { CREATE_BOARD, UPDATE_BOARD } from './BoardWrite.queries'
+import BoardWriteUI from "./BoardWrite.presenter";
+import { CREATE_BOARD, UPDATE_BOARD } from "./BoardWrite.queries";
+import { IBoardWriteProps, IMyUpdateBoardInput } from "./BoardWrite.types";
 
-export default function BoardWrite(props){
-    const router = useRouter()
-    
-    const [isActive, setIsActive] = useState(false)
+export default function BoardWrite(props: IBoardWriteProps) {
+  const router = useRouter();
 
-    const [myWriter, setMyWriter] = useState("");
-    const [myPassword, setMyPassword] = useState("");
-    const [myTitle, setMyTitle] = useState("");
-    const [myContents, setMyContents] = useState("");
-  
-    const [myWriterError, setMyWriterError] = useState("");
-    const [myPasswordError, setMyPasswordError] = useState("");
-    const [myTitleError, setMyTitleError] = useState("");
-    const [myContentsError, setMyContentsError] = useState("");
-  
-    const [createBoard] = useMutation(CREATE_BOARD);
-    const [updateBoard] = useMutation(UPDATE_BOARD);
-  
-    function onChangeMyWriter(event) {
-      setMyWriter(event.target.value);
-      if (event.target.value !== "") {
-        setMyWriterError("");
-      }
+  const [isActive, setIsActive] = useState(false);
 
-      if(event.target.value && myPassword && myTitle && myContents){
-        setIsActive(true)
-      } else {
-        setIsActive(false)
-      }
-    }
-    
-    function onChangeMyPassword(event) {
-      setMyPassword(event.target.value);
-      if (event.target.value !== "") {
-        setMyPasswordError("");
-      }
+  const [myWriter, setMyWriter] = useState("");
+  const [myPassword, setMyPassword] = useState("");
+  const [myTitle, setMyTitle] = useState("");
+  const [myContents, setMyContents] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
 
-      if(myWriter && event.target.value && myTitle && myContents){
-        setIsActive(true)
-      } else {
-        setIsActive(false)
-      }
-    }
-  
-    function onChangeMyTitle(event) {
-      setMyTitle(event.target.value);
-      if (event.target.value !== "") {
-        setMyTitleError("");
-      }
+  const [myWriterError, setMyWriterError] = useState("");
+  const [myPasswordError, setMyPasswordError] = useState("");
+  const [myTitleError, setMyTitleError] = useState("");
+  const [myContentsError, setMyContentsError] = useState("");
 
-      if(myWriter && myPassword && event.target.value && myContents){
-        setIsActive(true)
-      } else {
-        setIsActive(false)
-      }
-    }
-  
-    function onChangeMyContents(event) {
-      setMyContents(event.target.value);
-      if (event.target.value !== "") {
-        setMyContentsError("");
-      }
+  const [createBoard] = useMutation(CREATE_BOARD);
+  const [updateBoard] = useMutation(UPDATE_BOARD);
 
-      if(myWriter && myPassword && myTitle && event.target.value){
-        setIsActive(true)
-      } else {
-        setIsActive(false)
-      }
-    }
-  
-    async function onClickSubmit() {
-      if (myWriter === "") {
-        setMyWriterError("작성자를 입력해주세요.");
-      }
-      if (myPassword === "") {
-        setMyPasswordError("비밀번호를 입력해주세요.");
-      }
-      if (myTitle === "") {
-        setMyTitleError("제목을 입력해주세요.");
-      }
-      if (myContents === "") {
-        setMyContentsError("내용을 입력해주세요.");
-      }
-      if (myWriter !== "" && myPassword !== "" && myTitle !== "" && myContents !== "") {
-        try {
-          const result = await createBoard({
-            variables: {
-              createBoardInput: {
-                writer: myWriter,
-                password: myPassword,
-                title: myTitle,
-                contents: myContents,
-              },
-            },
-          })
-          router.push(`/boards/${result.data.createBoard._id}`)
-        } catch(error) {
-          console.log(error.message)
-        }
-      }
+  function onChangeMyWriter(event) {
+    setMyWriter(event.target.value);
+    if (event.target.value !== "") {
+      setMyWriterError("");
     }
 
-    async function onClickUpdate() {
-      if(!myTitle && !myContents){
-        alert('둘중 하나는 입력해야합니다.')
-        return
-      }
+    if (event.target.value && myPassword && myTitle && myContents) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }
 
-      if(!myPassword){
-        alert("비밀번호 입력해주세요")
-        return
-      }
+  function onChangeMyPassword(event) {
+    setMyPassword(event.target.value);
+    if (event.target.value !== "") {
+      setMyPasswordError("");
+    }
 
-      interface IMyUpdateBoardInput {
-        title?: string
-        contents?: string
-      }
-      const myUpdateBoardInput: IMyUpdateBoardInput = {}
-      if(myTitle) myUpdateBoardInput.title = myTitle
-      if(myContents) myUpdateBoardInput.contents = myContents
+    if (myWriter && event.target.value && myTitle && myContents) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }
 
+  function onChangeMyTitle(event) {
+    setMyTitle(event.target.value);
+    if (event.target.value !== "") {
+      setMyTitleError("");
+    }
+
+    if (myWriter && myPassword && event.target.value && myContents) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }
+
+  function onChangeMyContents(event) {
+    setMyContents(event.target.value);
+    if (event.target.value !== "") {
+      setMyContentsError("");
+    }
+
+    if (myWriter && myPassword && myTitle && event.target.value) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }
+
+  function onChangeYoutubeUrl(event: ChangeEvent<HTMLInputElement>) {
+    setYoutubeUrl(event.target.value);
+  }
+
+  async function onClickSubmit() {
+    if (myWriter === "") {
+      setMyWriterError("작성자를 입력해주세요.");
+    }
+    if (myPassword === "") {
+      setMyPasswordError("비밀번호를 입력해주세요.");
+    }
+    if (myTitle === "") {
+      setMyTitleError("제목을 입력해주세요.");
+    }
+    if (myContents === "") {
+      setMyContentsError("내용을 입력해주세요.");
+    }
+    if (
+      myWriter !== "" &&
+      myPassword !== "" &&
+      myTitle !== "" &&
+      myContents !== ""
+    ) {
       try {
-        await updateBoard({
+        const result = await createBoard({
           variables: {
-            boardId: router.query.aaa,
-            password: myPassword,
-            updateBoardInput: myUpdateBoardInput
+            createBoardInput: {
+              writer: myWriter,
+              password: myPassword,
+              title: myTitle,
+              contents: myContents,
+              youtubeUrl: youtubeUrl,
+            },
           },
         });
-        alert("수정이 완료되었습니다.")
-        router.push(`/boards/${router.query.aaa}`);
+        router.push(`/boards/${result.data.createBoard._id}`);
       } catch (error) {
-        alert(error.message);
+        console.log(error.message);
       }
     }
+  }
 
-    return (
-      <BoardWriteUI 
-        data={props.data}
-        isEdit={props.isEdit}
-        isActive={isActive}
-        myWriterError={myWriterError}
-        myPasswordError={myPasswordError}
-        myTitleError={myTitleError}
-        myContentsError={myContentsError}
-        onChangeMyWriter={onChangeMyWriter}
-        onChangeMyPassword={onChangeMyPassword}
-        onChangeMyTitle={onChangeMyTitle}
-        onChangeMyContents={onChangeMyContents}
-        onClickSubmit={onClickSubmit}
-        onClickUpdate={onClickUpdate}
-      />
-    )
+  async function onClickUpdate() {
+    if (!myTitle && !myContents && !youtubeUrl) {
+      alert("하나는 입력해야합니다.");
+      return;
+    }
+
+    if (!myPassword) {
+      alert("비밀번호 입력해주세요");
+      return;
+    }
+
+    const myUpdateBoardInput: IMyUpdateBoardInput = {};
+    if (myTitle) myUpdateBoardInput.title = myTitle;
+    if (myContents) myUpdateBoardInput.contents = myContents;
+    if (youtubeUrl) myUpdateBoardInput.youtubeUrl = youtubeUrl;
+
+    try {
+      await updateBoard({
+        variables: {
+          boardId: router.query.aaa,
+          password: myPassword,
+          updateBoardInput: myUpdateBoardInput,
+        },
+      });
+      alert("수정이 완료되었습니다.");
+      router.push(`/boards/${router.query.aaa}`);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  return (
+    <BoardWriteUI
+      data={props.data}
+      isEdit={props.isEdit}
+      isActive={isActive}
+      myWriterError={myWriterError}
+      myPasswordError={myPasswordError}
+      myTitleError={myTitleError}
+      myContentsError={myContentsError}
+      onChangeMyWriter={onChangeMyWriter}
+      onChangeMyPassword={onChangeMyPassword}
+      onChangeMyTitle={onChangeMyTitle}
+      onChangeMyContents={onChangeMyContents}
+      onChangeYoutubeUrl={onChangeYoutubeUrl}
+      onClickSubmit={onClickSubmit}
+      onClickUpdate={onClickUpdate}
+    />
+  );
 }
