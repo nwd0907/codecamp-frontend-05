@@ -4,17 +4,22 @@ import { useRouter } from "next/router";
 import BoardWriteUI from "./BoardWrite.presenter";
 import { CREATE_BOARD, UPDATE_BOARD } from "./BoardWrite.queries";
 import { IBoardWriteProps, IMyUpdateBoardInput } from "./BoardWrite.types";
+import { Modal } from "antd";
 
 export default function BoardWrite(props: IBoardWriteProps) {
   const router = useRouter();
 
   const [isActive, setIsActive] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [myWriter, setMyWriter] = useState("");
   const [myPassword, setMyPassword] = useState("");
   const [myTitle, setMyTitle] = useState("");
   const [myContents, setMyContents] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [address, setAddress] = useState("");
+  const [addressDetail, setAddressDetail] = useState("");
 
   const [myWriterError, setMyWriterError] = useState("");
   const [myPasswordError, setMyPasswordError] = useState("");
@@ -80,6 +85,20 @@ export default function BoardWrite(props: IBoardWriteProps) {
     setYoutubeUrl(event.target.value);
   }
 
+  function onChangeAddressDetail(event: ChangeEvent<HTMLInputElement>) {
+    setAddressDetail(event.target.value);
+  }
+
+  function onClickAddressSearch() {
+    setIsOpen(true);
+  }
+
+  function onCompleteAddressSearch(data: any) {
+    setAddress(data.address);
+    setZipcode(data.zonecode);
+    setIsOpen(false);
+  }
+
   async function onClickSubmit() {
     if (myWriter === "") {
       setMyWriterError("작성자를 입력해주세요.");
@@ -108,6 +127,11 @@ export default function BoardWrite(props: IBoardWriteProps) {
               title: myTitle,
               contents: myContents,
               youtubeUrl: youtubeUrl,
+              boardAddress: {
+                zipcode: zipcode,
+                address: address,
+                addressDetail: addressDetail,
+              },
             },
           },
         });
@@ -119,13 +143,20 @@ export default function BoardWrite(props: IBoardWriteProps) {
   }
 
   async function onClickUpdate() {
-    if (!myTitle && !myContents && !youtubeUrl) {
-      alert("하나는 입력해야합니다.");
+    if (
+      !myTitle &&
+      !myContents &&
+      !youtubeUrl &&
+      !address &&
+      !addressDetail &&
+      !zipcode
+    ) {
+      Modal.error({ content: "하나는 입력해야합니다." });
       return;
     }
 
     if (!myPassword) {
-      alert("비밀번호 입력해주세요");
+      Modal.error({ content: "비밀번호를 입력해주세요." });
       return;
     }
 
@@ -133,6 +164,13 @@ export default function BoardWrite(props: IBoardWriteProps) {
     if (myTitle) myUpdateBoardInput.title = myTitle;
     if (myContents) myUpdateBoardInput.contents = myContents;
     if (youtubeUrl) myUpdateBoardInput.youtubeUrl = youtubeUrl;
+    if (zipcode || address || addressDetail) {
+      myUpdateBoardInput.boardAddress = {};
+      if (zipcode) myUpdateBoardInput.boardAddress.zipcode = zipcode;
+      if (address) myUpdateBoardInput.boardAddress.address = address;
+      if (addressDetail)
+        myUpdateBoardInput.boardAddress.addressDetail = addressDetail;
+    }
 
     try {
       await updateBoard({
@@ -142,10 +180,10 @@ export default function BoardWrite(props: IBoardWriteProps) {
           updateBoardInput: myUpdateBoardInput,
         },
       });
-      alert("수정이 완료되었습니다.");
+      Modal.success({ content: "수정이 완료되었습니다." });
       router.push(`/boards/${router.query.aaa}`);
     } catch (error) {
-      alert(error.message);
+      Modal.error({ content: error.message });
     }
   }
 
@@ -163,8 +201,15 @@ export default function BoardWrite(props: IBoardWriteProps) {
       onChangeMyTitle={onChangeMyTitle}
       onChangeMyContents={onChangeMyContents}
       onChangeYoutubeUrl={onChangeYoutubeUrl}
+      onChangeAddressDetail={onChangeAddressDetail}
+      onClickAddressSearch={onClickAddressSearch}
+      onCompleteAddressSearch={onCompleteAddressSearch}
       onClickSubmit={onClickSubmit}
       onClickUpdate={onClickUpdate}
+      isOpen={isOpen}
+      zipcode={zipcode}
+      address={address}
+      addressDetail={addressDetail}
     />
   );
 }
