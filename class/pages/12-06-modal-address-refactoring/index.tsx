@@ -4,8 +4,8 @@ import DaumPostcode from "react-daum-postcode";
 
 export default function ModalCustomPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [address, setAddress] = useState("");
-  const [zonecode, setZonecode] = useState("");
+  const [, setAddress] = useState("");
+  const [, setZonecode] = useState("");
 
   const onToggleModal = () => {
     setIsModalVisible((prev) => !prev);
