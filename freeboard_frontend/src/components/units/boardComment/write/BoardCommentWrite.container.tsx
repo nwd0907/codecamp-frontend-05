@@ -4,12 +4,20 @@ import { ChangeEvent, useState } from "react";
 import {
   IMutation,
   IMutationCreateBoardCommentArgs,
+  IMutationUpdateBoardCommentArgs,
 } from "../../../../commons/types/generated/types";
 import { FETCH_BOARD_COMMENTS } from "../list/BoardCommentList.queries";
 import BoardCommentWriteUI from "./BoardCommentWrite.presenter";
-import { CREATE_BOARD_COMMENT } from "./BoardCommentWrite.queries";
+import {
+  CREATE_BOARD_COMMENT,
+  UPDATE_BOARD_COMMENT,
+} from "./BoardCommentWrite.queries";
+import {
+  IBoardCommentWriteProps,
+  IUpdateBoardCommentInput,
+} from "./BoardCommentWrite.types";
 
-export default function BoardCommentWrite() {
+export default function BoardCommentWrite(props: IBoardCommentWriteProps) {
   const router = useRouter();
   const [myWriter, setMyWriter] = useState("");
   const [myPassword, setMyPassword] = useState("");
@@ -20,6 +28,10 @@ export default function BoardCommentWrite() {
     Pick<IMutation, "createBoardComment">,
     IMutationCreateBoardCommentArgs
   >(CREATE_BOARD_COMMENT);
+  const [updateBoardComment] = useMutation<
+    Pick<IMutation, "updateBoardComment">,
+    IMutationUpdateBoardCommentArgs
+  >(UPDATE_BOARD_COMMENT);
 
   function onChangeMyWriter(event: ChangeEvent<HTMLInputElement>) {
     setMyWriter(event.target.value);
@@ -61,6 +73,42 @@ export default function BoardCommentWrite() {
     }
   }
 
+  async function onClickUpdate() {
+    if (!myContents) {
+      alert("내용이 수정되지 않았습니다.");
+      return;
+    }
+    if (!myPassword) {
+      alert("비밀번호가 입력되지 않았습니다.");
+      return;
+    }
+
+    try {
+      if (!props.el?._id) return;
+
+      const updateBoardCommentInput: IUpdateBoardCommentInput = {};
+      if (myContents) updateBoardCommentInput.contents = myContents;
+      if (star !== props.el.rating) updateBoardCommentInput.rating = star;
+
+      await updateBoardComment({
+        variables: {
+          updateBoardCommentInput,
+          password: myPassword,
+          boardCommentId: props.el?._id,
+        },
+        refetchQueries: [
+          {
+            query: FETCH_BOARD_COMMENTS,
+            variables: { boardId: router.query.aaa },
+          },
+        ],
+      });
+      props.setIsEdit(false);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
   return (
     <BoardCommentWriteUI
       onChangeMyWriter={onChangeMyWriter}
@@ -68,6 +116,9 @@ export default function BoardCommentWrite() {
       onChangeMyContents={onChangeMyContents}
       onChangeStar={onChangeStar}
       onClickWrite={onClickWrite}
+      onClickUpdate={onClickUpdate}
+      isEdit={props.isEdit}
+      el={props.el}
       myContents={myContents}
     />
   );
