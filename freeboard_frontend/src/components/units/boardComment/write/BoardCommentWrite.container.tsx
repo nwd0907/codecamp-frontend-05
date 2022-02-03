@@ -84,7 +84,7 @@ export default function BoardCommentWrite(props: IBoardCommentWriteProps) {
     }
 
     try {
-      if (!props.el?._id) return;
+      // if (!props.el?._id) return;
 
       const updateBoardCommentInput: IUpdateBoardCommentInput = {};
       if (myContents) updateBoardCommentInput.contents = myContents;

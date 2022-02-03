@@ -4,7 +4,7 @@ import { IBoardCommentWriteUIProps } from "./BoardCommentWrite.types";
 export default function BoardCommentWriteUI(props: IBoardCommentWriteUIProps) {
   return (
     <S.Wrapper>
-      {!props.el?._id && (
+      {!props.isEdit && (
         <>
           <S.PencilIcon src="/images/boardComment/write/pencil.png" />
           <span>댓글</span>

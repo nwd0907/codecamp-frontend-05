@@ -11,7 +11,7 @@ const BodyWrapper = styled.div`
 `;
 
 const LayoutSidebar = styled.div`
-  width: 400px;
+  width: 50px;
   height: 1800px;
   background-color: blue;
 `;
