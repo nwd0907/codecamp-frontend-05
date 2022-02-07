@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
 
 @Entity()
-export class Board {
+export class Board extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
   number!: number;
 
@@ -13,4 +13,7 @@ export class Board {
 
   @Column({ type: "text" })
   age!: number;
+
+  @Column({ type: "timestamp", default: null, nullable: true })
+  deletedAt!: Date;
 }
