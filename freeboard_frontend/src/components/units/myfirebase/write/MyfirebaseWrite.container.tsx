@@ -6,36 +6,36 @@ import { useRouter } from "next/router";
 
 export default function MyfirebaseWrite() {
   const router = useRouter();
-  const [myWriter, setMyWriter] = useState("");
-  const [myTitle, setMyTitle] = useState("");
-  const [myContents, setMyContents] = useState("");
+  const [writer, setWriter] = useState("");
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
 
   async function onClickSubmit() {
     const board = collection(getFirestore(firebaseApp), "board");
     await addDoc(board, {
-      writer: myWriter,
-      title: myTitle,
-      contents: myContents,
+      writer,
+      title,
+      contents,
     });
     alert("게시물 등록에 성공하였습니다!");
     router.push("/myfirebase");
   }
 
-  function onChangeMyWriter(event: ChangeEvent<HTMLInputElement>) {
-    setMyWriter(event.target.value);
+  function onChangeWriter(event: ChangeEvent<HTMLInputElement>) {
+    setWriter(event.target.value);
   }
-  function onChangeMyTitle(event: ChangeEvent<HTMLInputElement>) {
-    setMyTitle(event.target.value);
+  function onChangeTitle(event: ChangeEvent<HTMLInputElement>) {
+    setTitle(event.target.value);
   }
-  function onChangeMyContents(event: ChangeEvent<HTMLInputElement>) {
-    setMyContents(event.target.value);
+  function onChangeContents(event: ChangeEvent<HTMLInputElement>) {
+    setContents(event.target.value);
   }
 
   return (
     <MyfirebaseWriteUI
-      onChangeMyWriter={onChangeMyWriter}
-      onChangeMyTitle={onChangeMyTitle}
-      onChangeMyContents={onChangeMyContents}
+      onChangeWriter={onChangeWriter}
+      onChangeTitle={onChangeTitle}
+      onChangeContents={onChangeContents}
       onClickSubmit={onClickSubmit}
     />
   );

@@ -20,6 +20,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
   const [zipcode, setZipcode] = useState("");
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
+  const [fileUrls, setFileUrls] = useState(["", "", ""]);
 
   const [myWriterError, setMyWriterError] = useState("");
   const [myPasswordError, setMyPasswordError] = useState("");
@@ -29,7 +30,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
   const [createBoard] = useMutation(CREATE_BOARD);
   const [updateBoard] = useMutation(UPDATE_BOARD);
 
-  function onChangeMyWriter(event) {
+  const onChangeMyWriter = (event) => {
     setMyWriter(event.target.value);
     if (event.target.value !== "") {
       setMyWriterError("");
@@ -40,9 +41,9 @@ export default function BoardWrite(props: IBoardWriteProps) {
     } else {
       setIsActive(false);
     }
-  }
+  };
 
-  function onChangeMyPassword(event) {
+  const onChangeMyPassword = (event) => {
     setMyPassword(event.target.value);
     if (event.target.value !== "") {
       setMyPasswordError("");
@@ -53,9 +54,9 @@ export default function BoardWrite(props: IBoardWriteProps) {
     } else {
       setIsActive(false);
     }
-  }
+  };
 
-  function onChangeMyTitle(event) {
+  const onChangeMyTitle = (event) => {
     setMyTitle(event.target.value);
     if (event.target.value !== "") {
       setMyTitleError("");
@@ -66,9 +67,9 @@ export default function BoardWrite(props: IBoardWriteProps) {
     } else {
       setIsActive(false);
     }
-  }
+  };
 
-  function onChangeMyContents(event) {
+  const onChangeMyContents = (event) => {
     setMyContents(event.target.value);
     if (event.target.value !== "") {
       setMyContentsError("");
@@ -79,27 +80,33 @@ export default function BoardWrite(props: IBoardWriteProps) {
     } else {
       setIsActive(false);
     }
-  }
+  };
 
-  function onChangeYoutubeUrl(event: ChangeEvent<HTMLInputElement>) {
+  const onChangeYoutubeUrl = (event: ChangeEvent<HTMLInputElement>) => {
     setYoutubeUrl(event.target.value);
-  }
+  };
 
-  function onChangeAddressDetail(event: ChangeEvent<HTMLInputElement>) {
+  const onChangeAddressDetail = (event: ChangeEvent<HTMLInputElement>) => {
     setAddressDetail(event.target.value);
-  }
+  };
 
-  function onClickAddressSearch() {
+  const onClickAddressSearch = () => {
     setIsOpen(true);
-  }
+  };
 
-  function onCompleteAddressSearch(data: any) {
+  const onCompleteAddressSearch = (data: any) => {
     setAddress(data.address);
     setZipcode(data.zonecode);
     setIsOpen(false);
-  }
+  };
 
-  async function onClickSubmit() {
+  const onChangeFileUrls = (fileUrl: string, index: number) => {
+    const newFileUrls = [...fileUrls];
+    newFileUrls[index] = fileUrl;
+    setFileUrls(newFileUrls);
+  };
+
+  const onClickSubmit = async () => {
     if (myWriter === "") {
       setMyWriterError("작성자를 입력해주세요.");
     }
@@ -132,6 +139,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
                 address: address,
                 addressDetail: addressDetail,
               },
+              images: fileUrls,
             },
           },
         });
@@ -140,9 +148,9 @@ export default function BoardWrite(props: IBoardWriteProps) {
         console.log(error.message);
       }
     }
-  }
+  };
 
-  async function onClickUpdate() {
+  const onClickUpdate = async () => {
     if (
       !myTitle &&
       !myContents &&
@@ -185,7 +193,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
     } catch (error) {
       Modal.error({ content: error.message });
     }
-  }
+  };
 
   return (
     <BoardWriteUI
@@ -204,12 +212,14 @@ export default function BoardWrite(props: IBoardWriteProps) {
       onChangeAddressDetail={onChangeAddressDetail}
       onClickAddressSearch={onClickAddressSearch}
       onCompleteAddressSearch={onCompleteAddressSearch}
+      onChangeFileUrls={onChangeFileUrls}
       onClickSubmit={onClickSubmit}
       onClickUpdate={onClickUpdate}
       isOpen={isOpen}
       zipcode={zipcode}
       address={address}
       addressDetail={addressDetail}
+      fileUrls={fileUrls}
     />
   );
 }

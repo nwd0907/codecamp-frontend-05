@@ -33,12 +33,14 @@ export interface IBoardWriteUIProps {
   onChangeAddressDetail: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickAddressSearch: () => void;
   onCompleteAddressSearch: (data: any) => void;
+  onChangeFileUrls: (fileUrls: string, index: number) => void;
   onClickSubmit: () => void;
   onClickUpdate: () => void;
   isOpen: boolean;
   zipcode: string;
   address: string;
   addressDetail: string;
+  fileUrls: string[];
 }
 
 export interface ISubmitButtonProps {

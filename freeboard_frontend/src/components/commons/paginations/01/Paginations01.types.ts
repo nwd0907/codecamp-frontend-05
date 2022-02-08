@@ -1,5 +1,5 @@
 import { ApolloQueryResult } from "@apollo/client";
-import { Dispatch, MouseEvent, SetStateAction } from "react";
+import { MouseEvent } from "react";
 import {
   IQuery,
   IQueryFetchBoardsArgs,

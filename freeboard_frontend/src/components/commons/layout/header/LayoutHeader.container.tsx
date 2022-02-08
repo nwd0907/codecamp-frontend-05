@@ -4,13 +4,13 @@ import LayoutHeaderUI from "./LayoutHeader.presenter";
 export default function LayoutHeader() {
   const router = useRouter();
 
-  function onClickLogo() {
+  const onClickLogo = () => {
     router.push("/boards");
-  }
+  };
 
-  function onClickMoveToLogin() {
+  const onClickMoveToLogin = () => {
     router.push("/login");
-  }
+  };
 
   return (
     <LayoutHeaderUI
