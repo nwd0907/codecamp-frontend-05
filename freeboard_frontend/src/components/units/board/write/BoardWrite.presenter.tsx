@@ -102,7 +102,6 @@ export default function BoardWriteUI(props: IBoardWriteUIProps) {
               key={uuidv4()}
               index={index}
               fileUrl={el}
-              defaultFileUrl={props.data?.fetchBoard.images?.[index]}
               onChangeFileUrls={props.onChangeFileUrls}
             />
           ))}
