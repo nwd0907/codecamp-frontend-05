@@ -50,5 +50,23 @@ export default function TypescriptPage() {
 
   // let result = qqq(1, 2);
 
+  // interface(선언병합)와 type의 차이
+  // interface IProps {
+  //   name: string;
+  //   age: number;
+  // }
+  // // eslint-disable-next-line no-redeclare
+  // interface IProps {
+  //   school: string;
+  //   apple: number;
+  // }
+  // const aaa: IProps = {
+  //   age: 13,
+  //   name: "철수",
+  //   school: "다람쥐초등학교",
+  //   apple: 3,
+  // };
+  // console.log(aaa);
+
   return <div>타입스크립트 연습!!</div>;
 }
