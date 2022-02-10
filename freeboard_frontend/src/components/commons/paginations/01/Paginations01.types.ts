@@ -7,6 +7,7 @@ import {
 
 export interface IPaginations01Props {
   count?: number;
+  isRefreshed: string;
   refetch: (
     variables: Partial<IQueryFetchBoardsArgs>
   ) => Promise<ApolloQueryResult<Pick<IQuery, "fetchBoards">>>;
