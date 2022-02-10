@@ -15,6 +15,7 @@ export interface IMyUpdateBoardInput {
     address?: string;
     addressDetail?: string;
   };
+  images?: string[];
 }
 
 export interface IBoardWriteUIProps {

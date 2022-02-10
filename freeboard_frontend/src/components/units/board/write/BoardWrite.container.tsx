@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import BoardWriteUI from "./BoardWrite.presenter";
@@ -151,13 +151,18 @@ export default function BoardWrite(props: IBoardWriteProps) {
   };
 
   const onClickUpdate = async () => {
+    const currentFiles = JSON.stringify(fileUrls);
+    const defaultFiles = JSON.stringify(props.data.fetchBoard.images);
+    const isChangedFiles = currentFiles !== defaultFiles;
+
     if (
       !myTitle &&
       !myContents &&
       !youtubeUrl &&
       !address &&
       !addressDetail &&
-      !zipcode
+      !zipcode &&
+      !isChangedFiles
     ) {
       Modal.error({ content: "하나는 입력해야합니다." });
       return;
@@ -179,6 +184,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
       if (addressDetail)
         myUpdateBoardInput.boardAddress.addressDetail = addressDetail;
     }
+    if (isChangedFiles) myUpdateBoardInput.images = fileUrls;
 
     try {
       await updateBoard({
@@ -194,6 +200,12 @@ export default function BoardWrite(props: IBoardWriteProps) {
       Modal.error({ content: error.message });
     }
   };
+
+  useEffect(() => {
+    if (props.data?.fetchBoard.images?.length) {
+      setFileUrls([...props.data?.fetchBoard.images]);
+    }
+  }, [props.data]);
 
   return (
     <BoardWriteUI
