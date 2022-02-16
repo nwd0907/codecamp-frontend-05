@@ -1,4 +1,4 @@
-import { useMutation, gql } from "@apollo/client";
+import { useMutation, gql, useQuery, useApolloClient } from "@apollo/client";
 import { Modal } from "antd";
 import { useRouter } from "next/router";
 import { ChangeEvent, useContext, useState } from "react";
@@ -16,9 +16,19 @@ const LOGIN_USER = gql`
   }
 `;
 
+const FETCH_USER_LOGGED_IN = gql`
+  query fetchUserLoggedIn {
+    fetchUserLoggedIn {
+      email
+      name
+    }
+  }
+`;
+
 export default function LoginPage() {
-  const { setAccessToken } = useContext(GlobalContext);
+  const { setAccessToken, setUserInfo } = useContext(GlobalContext);
   const router = useRouter();
+  const client = useApolloClient();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +47,7 @@ export default function LoginPage() {
 
   const onClickLogin = async () => {
     try {
+      // 로그인하기
       const result = await loginUser({
         variables: {
           email: email,
@@ -44,11 +55,32 @@ export default function LoginPage() {
         },
       });
       const accessToken = result.data?.loginUser.accessToken || "";
-      console.log(accessToken);
+
+      // 유저정보 받아오기
+      const resultUserInfo = await client.query({
+        query: FETCH_USER_LOGGED_IN,
+        context: {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      });
+      const userInfo = resultUserInfo.data.fetchUserLoggedIn;
+
+      // 글로벌스테이트에 저장하기
       if (setAccessToken) setAccessToken(accessToken);
+      if (setUserInfo) setUserInfo(userInfo);
+
+      // refreshToken 배우기 전까지 임시로 저장해놓기
+      localStorage.setItem("accessToken", accessToken || "");
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+      // 잘 들어가 있는지 확인하기
+      console.log("==========================");
+      console.log(localStorage.getItem("accessToken"));
+      console.log(JSON.parse(localStorage.getItem("userInfo") || "{}"));
+      console.log("==========================");
 
       // 로그인 성공 페이지로 이동하기!!
-      router.push("/22-02-login-success");
+      router.push("/23-05-login-check-success");
     } catch (error) {
       if (error instanceof Error) Modal.error({ content: error.message });
     }

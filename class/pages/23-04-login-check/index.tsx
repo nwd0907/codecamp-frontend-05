@@ -45,10 +45,17 @@ export default function LoginPage() {
       });
       const accessToken = result.data?.loginUser.accessToken || "";
       console.log(accessToken);
-      if (setAccessToken) setAccessToken(accessToken);
+      if (setAccessToken) {
+        setAccessToken(accessToken);
+        localStorage.setItem("accessToken", accessToken || "");
+
+        console.log("==========================");
+        console.log(localStorage.getItem("accessToken"));
+        console.log("==========================");
+      }
 
       // 로그인 성공 페이지로 이동하기!!
-      router.push("/22-02-login-success");
+      router.push("/23-05-login-check-success");
     } catch (error) {
       if (error instanceof Error) Modal.error({ content: error.message });
     }
