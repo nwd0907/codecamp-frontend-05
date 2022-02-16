@@ -59,9 +59,6 @@ export default function LoginPage() {
       // 유저정보 받아오기
       const resultUserInfo = await client.query({
         query: FETCH_USER_LOGGED_IN,
-        context: {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        },
       });
       const userInfo = resultUserInfo.data.fetchUserLoggedIn;
 
