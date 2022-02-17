@@ -16,12 +16,12 @@ const schema = yup.object().shape({
     .required("비밀번호는 필수 입력 사항입니다."),
 });
 
-interface FormValues {
+export interface FormValues {
   myEmail?: string;
   myPassword?: string;
 }
 export default function ReactHookFormPage() {
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState } = useForm<FormValues>({
     mode: "onChange",
     resolver: yupResolver(schema),
   });

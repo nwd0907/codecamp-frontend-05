@@ -8,7 +8,12 @@ const MyButton = styled.button`
     props.isValid ? "yellow" : ""};
 `;
 
-export default function Button01(props) {
+interface IProps {
+  type: "button" | "submit" | "reset";
+  isValid: boolean;
+  name: string;
+}
+export default function Button01(props: IProps) {
   return (
     <MyButton type={props.type} isValid={props.isValid}>
       {props.name}
