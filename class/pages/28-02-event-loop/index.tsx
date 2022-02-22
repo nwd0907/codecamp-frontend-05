@@ -5,7 +5,7 @@
 
 // }, 1000)
 
-export default function TaskQueuePage() {
+export default function EventLoopPage() {
   const onClickTimer = () => {
     console.log("=======시작!!!!=======");
 
