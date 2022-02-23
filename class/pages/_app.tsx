@@ -11,6 +11,7 @@ import { AppProps } from "next/app";
 import Layout from "../src/components/commons/layout";
 import { globalStyles } from "../src/commons/styles/globalStyles";
 import { createUploadLink } from "apollo-upload-client";
+import Head from "next/head";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -92,14 +93,22 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <GlobalContext.Provider value={value}>
-      <ApolloProvider client={client}>
-        <Global styles={globalStyles} />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ApolloProvider>
-    </GlobalContext.Provider>
+    <div>
+      {/* <Head> 모든 페이지에서 카카오맵을 다운로드 받으므로 비효율적임
+        <script
+          type="text/javascript"
+          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9263f0edb6dedfd7f8d69aa27fa25d82"
+        ></script>
+      </Head> */}
+      <GlobalContext.Provider value={value}>
+        <ApolloProvider client={client}>
+          <Global styles={globalStyles} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ApolloProvider>
+      </GlobalContext.Provider>
+    </div>
   );
 }
 
