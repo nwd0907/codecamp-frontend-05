@@ -12,7 +12,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["react", "@typescript-eslint", "jest/globals"],
   rules: {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
